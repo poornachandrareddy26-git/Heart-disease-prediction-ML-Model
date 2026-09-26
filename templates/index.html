@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Heart Disease Prediction</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef7ff, #f7fbff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(30, 80, 120, 0.15);
+            display: grid;
+            grid-template-columns: 40% 60%;
+        }
+
+        /* -------------------------------
+           LEFT SECTION
+        -------------------------------- */
+
+        .left-section {
+            background: linear-gradient(145deg, #087f8c, #075985);
+            color: white;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .heart-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            margin-bottom: 25px;
+        }
+
+        .left-section h1 {
+            font-size: 38px;
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+
+        .left-section p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .info-box {
+            margin-top: 35px;
+            padding: 18px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .info-box span {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.5;
+        }
+
+        /* -------------------------------
+           RIGHT SECTION
+        -------------------------------- */
+
+        .right-section {
+            padding: 45px;
+        }
+
+        .form-header {
+            margin-bottom: 30px;
+        }
+
+        .form-header h2 {
+            color: #123047;
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #334e68;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #d9e2ec;
+            border-radius: 10px;
+            outline: none;
+            font-size: 15px;
+            background: #f8fafc;
+            transition: 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: #0e7490;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(14, 116, 144, 0.10);
+        }
+
+        .input-group small {
+            margin-top: 5px;
+            color: #829ab1;
+            font-size: 11px;
+        }
+
+        .predict-button {
+            width: 100%;
+            margin-top: 28px;
+            padding: 15px;
+            border: none;
+            border-radius: 11px;
+            background: linear-gradient(135deg, #087f8c, #075985);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .predict-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(7, 89, 133, 0.25);
+        }
+
+        .predict-button:active {
+            transform: translateY(0);
+        }
+
+        /* -------------------------------
+           RESULT
+        -------------------------------- */
+
+        .result {
+            margin-top: 25px;
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+        }
+
+        .result h3 {
+            color: #166534;
+            font-size: 18px;
+        }
+
+        .result p {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #4b5563;
+        }
+
+        /* -------------------------------
+           FOOTER
+        -------------------------------- */
+
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 11px;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        /* -------------------------------
+           RESPONSIVE
+        -------------------------------- */
+
+        @media (max-width: 800px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .left-section {
+                padding: 35px;
+            }
+
+            .left-section h1 {
+                font-size: 30px;
+            }
+
+            .right-section {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .left-section {
+                padding: 30px 25px;
+            }
+
+            .right-section {
+                padding: 25px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <!-- LEFT SIDE -->
+
+        <div class="left-section">
+
+            <div class="heart-icon">
+                ❤️
+            </div>
+
+            <h1>
+                Heart Disease
+                Prediction
+            </h1>
+
+            <p>
+                Enter the required health parameters to
+                generate a machine-learning-based prediction
+                for heart disease.
+            </p>
+
+            <div class="info-box">
+
+                <strong>
+                    How it works
+                </strong>
+
+                <span>
+                    The trained machine learning model analyzes
+                    the selected health parameters and predicts
+                    the corresponding class.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+
+        <div class="right-section">
+
+            <div class="form-header">
+
+                <h2>
+                    Patient Information
+                </h2>
+
+                <p>
+                    Enter the values below to generate a prediction.
+                </p>
+
+            </div>
+
+
+            <form method="POST">
+
+                <div class="form-grid">
+
+                    <!-- AGE -->
+
+                    <div class="input-group">
+
+                        <label for="age">
+                            Age
+                        </label>
+
+                        <input
+                            type="number"
+                            id="age"
+                            name="age"
+                            min="1"
+                            max="120"
+                            placeholder="e.g. 57"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- SEX -->
+
+                    <div class="input-group">
+
+                        <label for="sex">
+                            Sex
+                        </label>
+
+                        <input
+                            type="number"
+                            id="sex"
+                            name="sex"
+                            min="0"
+                            max="1"
+                            placeholder="0 or 1"
+                            required
+                        >
+
+                        <small>
+                            0 = Female, 1 = Male
+                        </small>
+
+                    </div>
+
+
+                    <!-- CP -->
+
+                    <div class="input-group">
+
+                        <label for="cp">
+                            Chest Pain Type
+                        </label>
+
+                        <input
+                            type="number"
+                            id="cp"
+                            name="cp"
+                            min="0"
+                            max="3"
+                            placeholder="0 - 3"
+                            required
+                        >
+
+                        <small>
+                            Enter value from 0 to 3
+                        </small>
+
+                    </div>
+
+
+                    <!-- THALACH -->
+
+                    <div class="input-group">
+
+                        <label for="thalach">
+                            Maximum Heart Rate
+                        </label>
+
+                        <input
+                            type="number"
+                            id="thalach"
+                            name="thalach"
+                            min="50"
+                            max="250"
+                            placeholder="e.g. 173"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- OLDPEAK -->
+
+                    <div class="input-group">
+
+                        <label for="oldpeak">
+                            Oldpeak
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            id="oldpeak"
+                            name="oldpeak"
+                            placeholder="e.g. 0.2"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- SLOPE -->
+
+                    <div class="input-group">
+
+                        <label for="slope">
+                            Slope
+                        </label>
+
+                        <input
+                            type="number"
+                            id="slope"
+                            name="slope"
+                            min="0"
+                            max="2"
+                            placeholder="0 - 2"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- THAL -->
+
+                    <div class="input-group">
+
+                        <label for="thal">
+                            Thal
+                        </label>
+
+                        <input
+                            type="number"
+                            id="thal"
+                            name="thal"
+                            min="0"
+                            max="3"
+                            placeholder="0 - 3"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- BUTTON -->
+
+                <button
+                    type="submit"
+                    class="predict-button"
+                >
+                    Predict Heart Disease
+                </button>
+
+            </form>
+
+
+            <!-- RESULT -->
+
+            {% if prediction %}
+
+            <div class="result">
+
+                <h3>
+                    {{ prediction }}
+                </h3>
+
+                <p>
+                    Prediction generated by the trained
+                    machine learning model.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+
+            <div class="footer">
+
+                This application is for educational and
+                demonstration purposes only and should not
+                be considered a medical diagnosis.
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
